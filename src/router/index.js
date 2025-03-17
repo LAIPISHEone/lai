@@ -7,6 +7,7 @@ import Mall from "../views/Mall.vue";
 import PageOne from "../views/PageOne.vue";
 import PageTwo from "../views/PageTwo.vue";
 import Login from "../views/login/index.vue";
+import Ai from "../views/Ai.vue";
 
 Vue.use(Router);
 let router;
@@ -21,6 +22,7 @@ export default router = new Router({
         { path: "/home", name: "home", component: Home }, // 首页
         { path: "/user", name: "user", component: User }, // 用户管理
         { path: "/mall", name: "mall", component: Mall }, // 商品管理
+        { path: "/ai", name: "ai", component: Ai }, // 商品管理
         { path: "/page1", name: "page1", component: PageOne }, // 页面1
         { path: "/page2", name: "page2", component: PageTwo }, // 页面2
       ],

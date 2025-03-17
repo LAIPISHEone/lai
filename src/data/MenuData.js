@@ -10,15 +10,22 @@ const MenuData= [
   {
     path: '/mall',
     name: 'mall',
-    label: '商品管理',
-    icon: 'video-play',
+    label: '学习工具',
+    icon: 'menu',
+    url: 'MallManage/MallManage'
+  },
+  {
+    path: '/ai',
+    name: 'ai',
+    label: 'AI学习助手',
+    icon: 'chat-dot-round',
     url: 'MallManage/MallManage'
   },
   {
     path: '/user',
     name: 'user',
-    label: '用户管理',
-    icon: 'user',
+    label: '日程管理',
+    icon: 'setting',
     url: 'UserManage/UserManage'
   },
   {
@@ -28,8 +35,8 @@ const MenuData= [
       {
         path: '/page1',
         name: 'page1',
-        label: '页面1',
-        icon: 'setting',
+        label: '个人信息',
+        icon: 'user',
         url: 'Other/PageOne'
       },
       {

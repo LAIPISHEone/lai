@@ -1,0 +1,9 @@
+handleDateClick(date) {
+  const event = this.events.find(e => e.date === date);
+  if (event) {
+    this.editingEvent = { ...event };
+  } else {
+    this.editingEvent = { date: date, title: '' };
+  }
+  this.dialogVisible = true;
+}

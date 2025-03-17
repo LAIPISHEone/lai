@@ -11,7 +11,7 @@
       :collapse="isCollapse"
     >
       <transition name="slide-left">
-        <h3 v-if="!isCollapse" key="full">通用后台管理系统</h3>
+        <h3 v-if="!isCollapse" key="full">辅助学习系统</h3>
         <h3 v-else key="collapsed">后台</h3>
       </transition>
       <el-menu-item

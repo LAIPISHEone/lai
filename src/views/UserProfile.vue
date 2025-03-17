@@ -6,7 +6,7 @@
         <el-avatar :size="80" src="https://placehold.co/80x80?text=Avatar"></el-avatar>
       </el-col>
       <el-col :span="12">
-        <h2>{{ name }}</h2>
+        <h2>{{ userName }}</h2>
         <p>产品设计师 @ 科技公司</p>
         <p><i class="el-icon-location-outline"></i> 上海市 &nbsp; <i class="el-icon-message"></i> chen.sy@example.com</p>
       </el-col>
@@ -107,13 +107,10 @@
     <el-dialog title="编辑个人资料" :visible.sync="dialogVisible" width="30%">
       <el-form :model="form" label-width="80px">
         <el-form-item label="昵称">
-          <el-input clearable v-model="form.nickname"></el-input>
+          <el-input v-model="form.nickname"></el-input>
         </el-form-item>
-        <!-- <el-form-item label="姓名">
+        <el-form-item label="姓名">
           <el-input v-model="form.name"></el-input>
-        </el-form-item> -->
-        <el-form-item label="密码">
-          <el-input type="password" clearable v-model="form.name"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -134,10 +131,10 @@ export default {
       emailNotification: false,
       dialogVisible: false,
       form: {
-        nickname: '兔子',
+        nickname: '陈思远',
         name: '林子晨'
       },
-      name: '兔子'
+      userName: '陈思远'
     };
   },
   methods: {
@@ -145,8 +142,8 @@ export default {
       this.dialogVisible = true;
     },
     handleEdit() {
+      this.userName = this.form.name;
       this.dialogVisible = false;
-      this.name = this.form.nickname;
       // 这里可以添加保存到服务器的逻辑
       console.log('保存修改后的昵称和姓名:', this.form);
     }

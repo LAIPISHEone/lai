@@ -26,8 +26,11 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </div>
+     
       <el-dropdown trigger="click" @command="handleCommand">
-        <span class="el-dropdown-link">
+        
+        <span style="display: flex; align-items: center" class="el-dropdown-link">
+          <span>{{ userName }}</span>
           <img class="user" src="../assets/user.png" alt="图片加载失败" />
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -46,7 +49,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
-    <div class="tags-container">
+    <!-- <div class="tags-container">
       <el-tag
         class="tag-item"
         v-for="(item, index) in tags"
@@ -58,7 +61,7 @@
       >
         {{ item.label }}
       </el-tag>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -68,7 +71,7 @@ export default {
   name: "Header",
   data() {
     return {
-      dynamicTags: ["标签一", "标签二", "标签三"],
+      userName: sessionStorage.getItem("userName"),
     };
   },
   computed: {
@@ -118,38 +121,39 @@ export default {
 };
 </script>
 
-<style scoped>
+<style  scoped>
 .header-container {
-  width: 100%;
+width: 100%;
+}
+.navbar-container {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0px;
+border-bottom: 1px solid #e6e6e6;
+width: 100%;
 
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0px;
-    border-bottom: 1px solid #e6e6e6;
-    width: 100%;
-    .custom-button {
-      padding: 0;
-      border: 0;
-      margin: 0 20px;
-      font-size: 16px;
-    }
-    .user {
-      width: 40px;
-      height: 40px;
-      margin-right: 20px;
-      margin: 5px 20px;
+}
+.custom-button {
+padding: 0;
+border: 0;
+margin: 0 20px;
+font-size: 16px;
+}
+.user {
+width: 40px;
+height: 40px;
+margin-right: 20px;
+margin: 3px 20px;
 
-      border-radius: 50%;
-    }
-  }
-  .tags-container {
-    margin: 5px 0px 5px 20px;
-    .tag-item {
-      margin-right: 10px;
-      cursor: pointer;
-    }
-  }
+border-radius: 50%;
+}
+.tags-container {
+margin: 5px 0px 5px 20px;
+
+}
+.tag-item {
+margin-right: 10px;
+cursor: pointer;
 }
 </style>

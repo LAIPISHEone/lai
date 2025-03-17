@@ -3,7 +3,8 @@ import axios from "axios";
 // 封装一个axios实例
 const http = axios.create({
   // 通用请求的地址前缀
-  baseURL: "/api",
+  baseURL: "http://localhost:8088/", // 添加 http:// 或 https://
+
   // 超时时间
   timeout: 30 * 1000,
 });
