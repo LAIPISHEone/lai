@@ -22,7 +22,7 @@
               placeholder="请输入密码"
               type="passWord"
               clearable
-              show-passWord
+              show-password
               @keyup.enter.native="submitForm('loginForm')"
               v-model="loginForm.passWord"
             ></el-input>
@@ -31,14 +31,14 @@
           <el-row type="flex" justify="center">
             <el-col :span="7">
               <el-button
-              v-if="isLogin"
+                v-if="isLogin"
                 type="primary"
                 style="width: 100%"
                 @click="submitForm('loginForm')"
                 >登录</el-button
               >
               <el-button
-              v-else
+                v-else
                 type="primary"
                 style="width: 100%"
                 @click="submitForm('loginForm')"
@@ -47,18 +47,22 @@
             </el-col>
           </el-row>
           <el-form-item>
-            <a v-if="isLogin" @click="isLogin= false" style="color: red;">还没有账号？点击去注册</a>
-            <a v-else @click="isLogin= true" style="color: red;">已有账号？点击去登录</a>
+            <a v-if="isLogin" @click="isLogin = false" style="color: red"
+              >还没有账号？点击去注册</a
+            >
+            <a v-else @click="isLogin = true" style="color: red"
+              >已有账号？点击去登录</a
+            >
           </el-form-item>
         </el-form>
-        
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {  registerApi, loginApi } from "../../api/user/index.js";
+import { registerApi, loginApi } from "../../api/user/index.js";
+import { getUserInfo } from "../../api/index.js";
 export default {
   name: "Login",
   data() {
@@ -81,50 +85,45 @@ export default {
           },
         ],
       },
-      isLogin:true,
+      isLogin: true,
     };
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if(this.isLogin) {
-            loginApi(this.loginForm).then((res) => {
-            console.log(res);
-            if (res.data.code == 200) {
+          if (this.isLogin) {
+            getUserInfo(this.loginForm).then((res) => {
               console.log(res);
-              this.$message.success(res.data.message);
-              localStorage.setItem("token", res.data.data.token);
-              sessionStorage.setItem("userName", res.data.data.userName);
-              this.$router.push("/home");
-            } else {
-              this.$message.error(res.data.message);
-              return false;
-            }
-          });
-        }else {
-          registerApi(this.loginForm).then((res) => {
-            console.log(res);
-            if (res.data.code == 200) {
-              this.$message.success(res.data.message);
-              this.isLogin = true;
-              // localStorage.setItem("token", res.data.data.token);
-              // this.$router.push("/home");
-            } else {
-              this.$message.error(res.data.message);
-              return false;
-            }
-          }).catch((err) => {
-            this.$message.error(err);
-          });
-          
-        }
-
-
-
-
-
-
+              if (res.data.code == 0) {
+                console.log(res);
+                this.$message.success(res.data.message);
+                localStorage.setItem("token", res.data.data.token);
+                sessionStorage.setItem("userName", res.data.data.userName);
+                this.$router.push("/home");
+              } else {
+                this.$message.error(res.data.message);
+                return false;
+              }
+            });
+          } else {
+            registerApi(this.loginForm)
+              .then((res) => {
+                console.log(res);
+                if (res.data.code == 200) {
+                  this.$message.success(res.data.message);
+                  this.isLogin = true;
+                  // localStorage.setItem("token", res.data.data.token);
+                  // this.$router.push("/home");
+                } else {
+                  this.$message.error(res.data.message);
+                  return false;
+                }
+              })
+              .catch((err) => {
+                this.$message.error(err);
+              });
+          }
         }
       });
     },
@@ -137,15 +136,13 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100vh;
-
-
 }
 .login-form {
-width: 400px;
-height: 300px;
-border-radius: 20px;
-box-shadow: 0px 0px 7px #7c7c7c;
-background-color: rgb(255, 255, 255);
+  width: 400px;
+  height: 300px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 7px #7c7c7c;
+  background-color: rgb(255, 255, 255);
 }
 
 .login-form-header {

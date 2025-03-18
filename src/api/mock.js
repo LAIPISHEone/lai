@@ -5,8 +5,8 @@ import JSON from "json5";
 Mock.mock("/api/user/info", function (options) {
   console.log(JSON.parse(options.body));
   if (
-    JSON.parse(options.body).password == "123456" &&
-    JSON.parse(options.body).username == "admin"
+    JSON.parse(options.body).passWord == "123456" &&
+    JSON.parse(options.body).userName == "admin"
   ) {
     return Mock.mock({
       code: 0,
@@ -26,3 +26,14 @@ Mock.mock("/api/user/info", function (options) {
   }
   // mock的逻辑
 });
+
+// Mock.mock("/api/user/login", function (options) {
+// });
+
+// export const loginApi = (data) => {
+//   return http({
+//     url: "/user/login",
+//     method: "post",
+//     data,
+//   });
+// };
