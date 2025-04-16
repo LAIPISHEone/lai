@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-form">
-      <div class="login-form-header"><h3>用户登录</h3></div>
+      <div class="login-form-header"><h3>辅助学习系统管理后台</h3></div>
       <div class="login-form-body">
         <el-form
           :rules="rules"
