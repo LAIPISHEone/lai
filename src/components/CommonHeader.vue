@@ -30,7 +30,8 @@
       <el-dropdown trigger="click" @command="handleCommand">
         
         <span style="display: flex; align-items: center" class="el-dropdown-link">
-          <span>{{ userName }}</span>
+          <!-- <span>{{ userName || "lai" }}</span> -->
+          <span>{{ "lai" }}</span>
           <img class="user" src="../assets/user.png" alt="图片加载失败" />
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -116,6 +117,7 @@ export default {
       localStorage.removeItem("token");
 
       this.$router.push({ path: "/login" });
+      this.$message.success("退出登录成功");
     },
   },
 };

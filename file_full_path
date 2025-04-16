@@ -7,3 +7,7 @@ handleDateClick(date) {
   }
   this.dialogVisible = true;
 }
+
+navigateToCourse(card) {
+  this.$router.push({ name: 'course', params: { id: card.id } });
+}

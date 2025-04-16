@@ -76,6 +76,12 @@ export default {
   },
   methods: {
     async sendMessage() {
+      if(!this.userInput) {
+        this.$message.error("请输入您的问题");
+        return;
+      }
+
+
       this.isAiLoading = true;
 
       if (!this.userInput.trim() || this.isWaitingForResponse) return;
@@ -95,7 +101,9 @@ export default {
         // 这里应该是实际的API调用，现在用setTimeout模拟
         setTimeout(() => {
           // 模拟AI响应
-          const aiResponse = `这是对 "${userQuestion}" 的AI回答。实际实现时，这里应该是从后端API获取的响应。`;
+          // const aiResponse = `这是对 "${userQuestion}" 的AI回答。实际实现时，这里应该是从后端API获取的响应。`;
+          const aiResponse = "Vue.js 是一个用于构建用户界面的渐进式 JavaScript 框架，由尤雨溪于 2014 年创建。它以简洁、灵活和高效著称，采用响应式数据绑定和虚拟 DOM 技术，使得数据变化时视图能够自动更新，同时通过组件化开发模式，将应用拆分为可复用的组件，提升代码的可维护性。Vue.js 提供了丰富的指令系统（如 `v-if`、`v-for` 等），支持单文件组件，将模板、逻辑和样式封装在一起，便于开发。其生态系统包括 Vue Router、Vuex 等官方工具，社区插件丰富，适用于从简单页面到复杂单页应用的开发。Vue.js 学习曲线平缓，API 设计直观，文档详尽，深受开发者喜爱，是一个既能快速上手又能满足复杂需求的前端框架。";
+    
           this.chatHistory.push({ type: "ai", content: aiResponse });
           this.isWaitingForResponse = false;
 
@@ -120,8 +128,9 @@ export default {
 
 <style scoped>
 .ai-chat-section {
-  margin-top: 40px;
-  height: 600px;
+  /* margin-top: 40px; */
+  /* height: 600px; */
+  height: 72vh;
   overflow-y: auto;
   border: 1px solid #e6e6e6;
   border-radius: 4px;

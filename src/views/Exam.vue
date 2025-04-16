@@ -26,7 +26,7 @@
           v-for="(exam, index) in filteredExamsByCategory(category.exams)"
           :key="index"
           :title="exam.name"
-          style="margin: 20px; width: 360px"
+          style="margin: 20px; width: 350px"
         >
           <div class="exam-info">
             <p><strong>考试时间:</strong> {{ exam.date }}</p>

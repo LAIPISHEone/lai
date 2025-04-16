@@ -2,7 +2,7 @@ const MenuData = [
   {
     path: "/",
     name: "home",
-    label: "首页",
+    label: "课程管理",
     icon: "s-home",
     url: "Home/Home",
   },
@@ -45,13 +45,13 @@ const MenuData = [
         icon: "user",
         url: "Other/PageOne",
       },
-      {
-        path: "/page2",
-        name: "page2",
-        label: "页面2",
-        icon: "setting",
-        url: "Other/PageTwo",
-      },
+      // {
+      //   path: "/page2",
+      //   name: "page2",
+      //   label: "页面2",
+      //   icon: "setting",
+      //   url: "Other/PageTwo",
+      // },
     ],
   },
 ];

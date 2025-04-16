@@ -22,8 +22,8 @@
           <div slot="header"><strong>基本信息</strong></div>
           <el-row :gutter="20">
             <el-col :span="12">
-              <p><strong>真实姓名</strong></p>
-              <p>林子晨</p>
+              <p><strong>昵称</strong></p>
+              <p>{{ name }}</p>
             </el-col>
             <el-col :span="12">
               <p><strong>性别</strong></p>
@@ -39,10 +39,11 @@
             </el-col>
           </el-row>
         </el-card>
+        
       </el-col>
 
       <!-- 学习信息 -->
-      <el-col :span="8">
+      <!-- <el-col :span="8">
         <el-card>
           <div slot="header"><strong>学习信息</strong></div>
           <p><strong>就读学校</strong></p>
@@ -54,12 +55,12 @@
           <p><strong>学生身份</strong></p>
           <p>本科生</p>
         </el-card>
-      </el-col>
+      </el-col> -->
     </el-row>
 
     <!-- 账号设置和通知设置 -->
     <el-row :gutter="20" class="settings">
-      <el-col :span="8">
+      <!-- <el-col :span="8">
         <el-card>
           <div slot="header"><strong>账号设置</strong></div>
           <el-row>
@@ -77,26 +78,18 @@
             </el-col>
           </el-row>
         </el-card>
-      </el-col>
+      </el-col> -->
       <el-col :span="8">
         <el-card>
           <div slot="header"><strong>通知设置</strong></div>
           <el-row>
             <el-col>
-              <p>系统通知</p>
+              <p>公告通知</p>
               <el-switch v-model="systemNotification"></el-switch>
             </el-col>
             <el-col>
-              <p>课程提醒</p>
+              <p>复习提醒</p>
               <el-switch v-model="courseReminder"></el-switch>
-            </el-col>
-            <el-col>
-              <p>活动通知</p>
-              <el-switch v-model="activityNotification"></el-switch>
-            </el-col>
-            <el-col>
-              <p>邮件通知</p>
-              <el-switch v-model="emailNotification"></el-switch>
             </el-col>
           </el-row>
         </el-card>
@@ -135,7 +128,7 @@ export default {
       dialogVisible: false,
       form: {
         nickname: '兔子',
-        name: '林子晨'
+        name: '12345678'
       },
       name: '兔子'
     };
@@ -147,6 +140,7 @@ export default {
     handleEdit() {
       this.dialogVisible = false;
       this.name = this.form.nickname;
+      this.$message.success('修改成功!')
       // 这里可以添加保存到服务器的逻辑
       console.log('保存修改后的昵称和姓名:', this.form);
     }
@@ -156,11 +150,11 @@ export default {
 
 <style scoped>
 .user-profile {
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .header {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .content {
@@ -168,6 +162,6 @@ export default {
 }
 
 .settings {
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 </style>

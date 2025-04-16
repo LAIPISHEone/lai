@@ -17,9 +17,9 @@
       <el-row :gutter="20">
         <!-- 现有学科卡片 -->
         <template v-if="filteredCards.length > 0">
-          <el-col :span="8" v-for="(card, index) in filteredCards" :key="index">
-            <el-card class="subject-card" :class="card.type" shadow="hover">
-              <div class="card-actions">
+          <el-col :span="8" v-for="(card, index) in filteredCards" :key="index" @click.native="navigateToCourse(card)">
+            <el-card class="subject-card" :class="card.type" shadow="hover" >
+              <div class="card-actions" >
                 <el-button 
                   type="text" 
                   icon="el-icon-edit" 
@@ -346,7 +346,12 @@ export default {
     // 删除标签
     handleTagClose(tag) {
       this.cardForm.tags.splice(this.cardForm.tags.indexOf(tag), 1);
-    }
+    },
+
+    // 导航到课程详情页
+    navigateToCourse(card) {
+  this.$router.push({ path: 'course', params: { id: card.id } });
+}
   }
 }
 </script>

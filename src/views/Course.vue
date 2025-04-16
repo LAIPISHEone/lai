@@ -1,76 +1,108 @@
 <template>
-  <div style="display: flex">
-    <div
-      style="
-        width: 300px;
-        height: 309px;
-        background-color: #fff;
-        margin-top: 20px;
-        margin-right: 20px;
-        border: #c0c0c0 1px solid;
-      "
-    >
-      <div
-        style="
-          display: flex;
-          align-items: center;
-          border-bottom: #c0c0c0 1px solid;
-        "
-      >
-        <span style="margin: 10px 0 10px 10px">目录</span>
-      </div>
-
-      <ul>
-        <li
-          v-for="(item, index) in list"
-          style="list-style-type: none; padding: 5px"
-          :style="{ 'padding-left': item.padding }"
-          :key="index"
-        >
-          <a
-            :class="activeIndex === index ? 'active' : 'activeFalse'"
-            @click="handleItemClick(index)"
-            style="text-decoration: none"
-            >{{ item.title }}</a
+  <div>
+    <el-tabs v-model="activeTab">
+      <el-tab-pane label="课程笔记" name="notes">
+        <!-- 课程笔记内容区域 -->
+        <div style="display: flex">
+          <div
+            style="
+              width: 300px;
+              height: 309px;
+              background-color: #fff;
+              margin-top: 20px;
+              margin-right: 20px;
+              border: #c0c0c0 1px solid;
+            "
           >
-        </li>
-      </ul>
-    </div>
-    <!-- 富文本编辑器 -->
-    <div style="margin-top: 20px; width: 60%" id="wangeditor"></div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                border-bottom: #c0c0c0 1px solid;
+              "
+            >
+              <span style="margin: 10px 0 10px 10px">目录</span>
+            </div>
+
+            <ul>
+              <li
+                v-for="(item, index) in list"
+                style="list-style-type: none; padding: 5px"
+                :style="{ 'padding-left': item.padding }"
+                :key="index"
+              >
+                <a
+                  :class="activeIndex === index ? 'active' : 'activeFalse'"
+                  @click="handleItemClick(index)"
+                  style="text-decoration: none"
+                  >{{ item.title }}</a
+                >
+              </li>
+            </ul>
+          </div>
+          <!-- 富文本编辑器 -->
+          <div style="margin-top: 20px; width: 60%" id="wangeditor"></div>
+          <!-- 添加保存和编辑按钮 -->
+         
+        </div>
+        <div style="margin-top: 20px ;display: flex;justify-content: center;t">
+            <!-- <el-button type="primary" @click="editNotes">编辑</el-button> -->
+            <el-button type="success" @click="saveNotes">保存</el-button>
+          </div>
+      </el-tab-pane>
+      <el-tab-pane label="课程资料" name="materials">
+        <!-- 课程资料内容区域 -->
+        <div>
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="3"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+          <div v-if="fileList.length > 0">
+            <h3>文件列表</h3>
+            <ul>
+              <li v-for="(file, index) in fileList" :key="index">
+                {{ file.name }}
+                <el-button type="text" @click="downloadFile(file)">下载</el-button>
+                <el-button type="text" @click="previewFile(file)">预览</el-button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
-// import { uploadImage } from '@/api/api'; // 导入图片上传api
 import E from "wangeditor";
 
 export default {
-  name: "richText",
-  components: {},
-  props: {
-    defaultDetails: {
-      default: "请填写内容",
-      type: String,
-    },
-  },
-  watch: {
-    htmlContent(val) {
-      this.$emit("change", val); // 将改变同步到父组件
-      if (this.validateEvent) {
-        this.dispatch("ElFormItem", "el.form.change", [val]);
-      }
-    },
-  },
   data() {
     return {
+      activeTab: 'notes', // 默认激活的标签页
       editor: null,
       htmlContent: "<p>hello</p>",
       firtherMethod: "loadingCompleted", // 回调父组件，通知editor已经创建完成
       list: [],
       activeIndex: 0,
+      fileList: [], // 文件列表
+      isEditing: false, // 是否处于编辑状态
     };
   },
+  created() {
+    
+  },
+  
   methods: {
     // 获取text文本
     getText() {
@@ -84,15 +116,6 @@ export default {
       console.log("thml = ", html);
       return html;
     },
-    // 图片上传自定义实现
-    // async uploadImage(files) {
-    //   const file = files[0];
-    //   console.log('Fuedit2-uploadImage file = ', file);
-    //   const res = await uploadImage(obj);
-    //   const path = SOCKET + (res.path || {});
-    //   console.log('完整path = ', path);
-    //   return path;
-    // },
     // 设置内容
     setHtml(html) {
       this.editor.txt.html(html); // 重新设置编辑器内容
@@ -124,7 +147,7 @@ export default {
       this.editor.config.height = 600; // 设置高度
 
       // 内容发生改变时回调
-      this.editor.config.onchange = function (html) {
+      this.editor.config.onchange = (html) => {
         console.log("内容改变", html);
 
         // this.htmlContent = html;
@@ -174,10 +197,7 @@ export default {
       ]; // 图片上传类型
       this.editor.config.uploadImgMaxLength = 1; // 一次最多上传 1 个图片
 
-      this.editor.config.customUploadImg = async function (
-        resultFiles,
-        insertImgFn
-      ) {
+      this.editor.config.customUploadImg = async (resultFiles, insertImgFn) => {
         // 自定义图片上传实现
         // resultFiles 是 input 中选中的文件列表；insertImgFn 是获取图片 url 后，插入到编辑器的方法
         const file = resultFiles[0];
@@ -214,6 +234,60 @@ export default {
         // 滚动到目标锚点
         targetElement.scrollIntoView({ behavior: "smooth" });
       }
+    },
+    // 文件上传相关方法
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${ file.name }？`);
+    },
+    downloadFile(file) {
+      // 下载文件逻辑
+      console.log('下载文件:', file);
+      // 这里可以添加实际的下载逻辑，例如使用a标签下载
+      const link = document.createElement('a');
+      link.href = file.url; // 文件的URL
+      link.download = file.name; // 文件名
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+    previewFile(file) {
+      // 预览文件逻辑
+      console.log('预览文件:', file);
+      // 这里可以添加实际的预览逻辑，例如使用iframe预览
+      const previewWindow = window.open();
+      previewWindow.document.write(`<iframe src="${file.url}" width="100%" height="100%" style="border:none;"></iframe>`);
+    },
+    // 添加编辑笔记的方法
+    editNotes() {
+      this.isEditing = true;
+    },
+    // 添加保存笔记的方法
+    saveNotes() {
+      if (!this.isEditing) {
+        this.$message.warning('请先编辑笔记内容');
+        return;
+      }
+      const htmlContent = this.getHtml();
+      // 这里可以添加保存笔记到后端的逻辑
+      console.log('保存笔记内容:', htmlContent);
+      // 示例：发送笔记内容到后端
+      // this.$axios.post('/api/saveNotes', { content: htmlContent })
+      //   .then(response => {
+      //     this.$message.success('笔记保存成功');
+      //   })
+      //   .catch(error => {
+      //     this.$message.error('笔记保存失败');
+      //   });
+      this.isEditing = false;
     },
   },
 
@@ -255,8 +329,8 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-/* @import '../css/Cnel.css';
+<style scoped>
+/* @import '../css/Cnel.css'; */
 
 /* 使用style属性src引入外部css，仅在当前s组件有效 */
 .active {

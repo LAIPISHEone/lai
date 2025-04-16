@@ -9,6 +9,8 @@ import PageTwo from "../views/PageTwo.vue";
 import Login from "../views/login/index.vue";
 import Ai from "../views/Ai.vue";
 import Exam from "../views/Exam.vue";
+import Course from "../views/course.vue";
+import Conversion from "../views/util/conversion.vue";
 
 Vue.use(Router);
 let router;
@@ -27,6 +29,8 @@ export default router = new Router({
         { path: "/exam", name: "exam", component: Exam }, // 商品管理
         { path: "/page1", name: "page1", component: PageOne }, // 页面1
         { path: "/page2", name: "page2", component: PageTwo }, // 页面2
+        { path: "/course",name: "Course", component: Course },//课程管理
+        { path: "/conversion",name: "Conversion", component: Conversion },//进制转换
       ],
     },
     {
@@ -34,6 +38,7 @@ export default router = new Router({
       name: "Login",
       component: Login,
     },
+    
   ],
 });
 

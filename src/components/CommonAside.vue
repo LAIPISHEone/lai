@@ -5,14 +5,14 @@
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      background-color="#304156"
-      text-color="#BFCBD9"
-      active-text-color="#79BBFF"
+      background-color="#2c3e50"
+      text-color="#ecf0f1"       
+      active-text-color="#3498db" 
       :collapse="isCollapse"
     >
       <transition name="slide-left">
         <h3 v-if="!isCollapse" key="full">辅助学习系统</h3>
-        <h3 v-else key="collapsed">后台</h3>
+        <h3 v-else key="collapsed"></h3>
       </transition>
       <el-menu-item
         @click="clickItem(item)"
