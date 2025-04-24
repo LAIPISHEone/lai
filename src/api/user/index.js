@@ -17,7 +17,7 @@ export const logoutApi = () => {
 
 export const registerApi = (data) => {
   return http({
-    url: "/user/add",
+    url: "/user/register",
     method: "post",
     data,
   });

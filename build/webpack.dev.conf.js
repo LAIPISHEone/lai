@@ -37,7 +37,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,
-    host: HOST || config.dev.host,
+    host: "0.0.0.0", // 允许外部访问
+    // host: HOST || config.dev.host,
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay
@@ -49,6 +50,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     watchOptions: {
       poll: config.dev.poll,
     },
+    disableHostCheck: true, // 禁用 host 检查，允许所有来源访问
   },
   plugins: [
     new webpack.DefinePlugin({
@@ -74,6 +76,22 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   ],
 });
 
+const os = require("os");
+
+// 获取网络IP地址的函数
+function getNetworkIp() {
+  const interfaces = os.networkInterfaces();
+  for (const devName in interfaces) {
+    const iface = interfaces[devName];
+    for (const alias of iface) {
+      if (alias.family === "IPv4" && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  return "127.0.0.1"; // 默认回退到本地地址
+}
+
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port;
   portfinder.getPort((err, port) => {
@@ -85,12 +103,16 @@ module.exports = new Promise((resolve, reject) => {
       // add port to devServer config
       devWebpackConfig.devServer.port = port;
 
+      // 获取网络IP地址
+      const networkIp = getNetworkIp();
+
       // Add FriendlyErrorsPlugin
       devWebpackConfig.plugins.push(
         new FriendlyErrorsPlugin({
           compilationSuccessInfo: {
             messages: [
               `Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`,
+              `- Network: http://${networkIp}:${port}`,
             ],
           },
           onErrors: config.dev.notifyOnErrors

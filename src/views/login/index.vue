@@ -4,10 +4,12 @@
       <div class="login-card">
         <!-- 顶部标题区域 -->
         <div class="login-header">
-          <h2 class="login-title">{{ isLogin ? '欢迎回来' : '加入我们' }}</h2>
-          <p class="login-subtitle">{{ isLogin ? '请登录您的账户' : '创建新账户' }}</p>
+          <h2 class="login-title">{{ isLogin ? "欢迎回来" : "加入我们" }}</h2>
+          <p class="login-subtitle">
+            {{ isLogin ? "请登录您的账户" : "创建新账户" }}
+          </p>
         </div>
-        
+
         <!-- 表单区域 -->
         <div class="login-body">
           <el-form
@@ -27,7 +29,7 @@
                 clearable
               ></el-input>
             </el-form-item>
-            
+
             <!-- 密码输入 -->
             <el-form-item label="密码" prop="passWord" class="form-item">
               <el-input
@@ -49,16 +51,16 @@
                 @click="submitForm('loginForm')"
                 :loading="loading"
               >
-                {{ isLogin ? '登录' : '注册' }}
+                {{ isLogin ? "登录" : "注册" }}
               </el-button>
             </div>
-            
+
             <!-- 切换链接 -->
             <div class="toggle-action">
               <span class="toggle-text">
-                {{ isLogin ? '还没有账号？' : '已有账号？' }}
+                {{ isLogin ? "还没有账号？" : "已有账号？" }}
                 <a @click="isLogin = !isLogin" class="toggle-link">
-                  {{ isLogin ? '立即注册' : '立即登录' }}
+                  {{ isLogin ? "立即注册" : "立即登录" }}
                 </a>
               </span>
             </div>
@@ -95,7 +97,7 @@ export default {
         ],
       },
       isLogin: true,
-      loading: false
+      loading: false,
     };
   },
   methods: {
@@ -104,35 +106,44 @@ export default {
         if (valid) {
           this.loading = true;
           if (this.isLogin) {
-            getUserInfo(this.loginForm).then((res) => {
-              this.loading = false;
-              if (res.data.code == 0) {
-                this.$message.success(res.data.message);
-                localStorage.setItem("token", res.data.data.token);
-                sessionStorage.setItem("userName", res.data.data.userName);
-                this.$router.push("/home");
-                this.$notify.info({
-                  title: '公告',
-                  message: 'AI助手已上线，快去试试吧！',
-                  duration: 0
-                });
-                setTimeout(() => {
-                  this.$notify({
-                  title: '复习提醒',
-                  message: '您今天有2项复习任务，快去复习吧！',
-                   type: 'warning',
-                   duration: 0
-                });
-                }, 1000);
-               
-              } else {
-                this.$message.error(res.data.message);
-              }
-            }).catch(() => {
-              this.loading = false;
-            });
+            let params = {
+              userName: this.loginForm.userName,
+              password: this.loginForm.passWord,
+            };
+            loginApi(params)
+              .then((res) => {
+                this.loading = false;
+                if (res.data.code == 200) {
+                  this.$message.success(res.data.message);
+                  localStorage.setItem("token", res.data.data);
+                  sessionStorage.setItem("userName", this.loginForm.userName);
+                  this.$router.push("/home");
+                  this.$notify.info({
+                    title: "公告",
+                    message: "AI助手已上线，快去试试吧！",
+                    duration: 0,
+                  });
+                  setTimeout(() => {
+                    this.$notify({
+                      title: "复习提醒",
+                      message: "您今天有2项复习任务，快去复习吧！",
+                      type: "warning",
+                      duration: 0,
+                    });
+                  }, 1000);
+                } else {
+                  this.$message.error(res.data.message);
+                }
+              })
+              .catch(() => {
+                this.loading = false;
+              });
           } else {
-            registerApi(this.loginForm)
+            let params = {
+              userName: this.loginForm.userName,
+              password: this.loginForm.passWord,
+            };
+            registerApi(params)
               .then((res) => {
                 this.loading = false;
                 if (res.data.code == 200) {
@@ -208,19 +219,19 @@ export default {
 .login-form {
   .form-item {
     margin-bottom: 22px;
-    
+
     >>> .el-form-item__label {
       padding-bottom: 8px;
       font-weight: 500;
       color: #555;
     }
-    
+
     >>> .el-input__inner {
       height: 42px;
       line-height: 42px;
       border-radius: 6px;
     }
-    
+
     >>> .el-input__prefix {
       display: flex;
       align-items: center;
@@ -232,7 +243,7 @@ export default {
 .form-actions {
   margin-top: 30px;
   text-align: center;
-  
+
   .submit-btn {
     width: 100%;
     height: 44px;
@@ -248,18 +259,18 @@ export default {
   margin-top: 20px;
   text-align: center;
   font-size: 14px;
-  
+
   .toggle-text {
     color: #666;
   }
-  
+
   .toggle-link {
     color: #667eea;
     text-decoration: none;
     cursor: pointer;
     font-weight: 500;
     transition: color 0.3s;
-    
+
     &:hover {
       color: #764ba2;
       text-decoration: underline;
@@ -272,8 +283,9 @@ export default {
   .login-card {
     border-radius: 0;
   }
-  
-  .login-header, .login-body {
+
+  .login-header,
+  .login-body {
     padding: 25px 20px;
   }
 }

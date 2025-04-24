@@ -4,7 +4,7 @@ import axios from "axios";
 const http = axios.create({
   // 通用请求的地址前缀
   // baseURL: "http://localhost:8088/", // 添加 http:// 或 https://
-  baseURL: "/api", // 添加 http:// 或 https://
+  baseURL: "/campus", // 添加 http:// 或 https://
 
   // 超时时间
   timeout: 30 * 1000,
