@@ -7,17 +7,17 @@
       </el-col>
       <el-col :span="12">
         <h2>{{ name }}</h2>
-        <p>产品设计师 @ 科技公司</p>
-        <p><i class="el-icon-location-outline"></i> 上海市 &nbsp; <i class="el-icon-message"></i> chen.sy@example.com</p>
+        <!-- <p>产品设计师 @ 科技公司</p>
+        <p><i class="el-icon-location-outline"></i> 上海市 &nbsp; <i class="el-icon-message"></i> chen.sy@example.com</p> -->
       </el-col>
       <el-col :span="6">
-        <el-button type="primary" @click="editProfile">编辑个人资料</el-button>
+        <el-button type="primary" @click="editProfile">修改密码</el-button>
       </el-col>
     </el-row>
 
     <!-- 基本信息 -->
-    <el-row :gutter="20" class="content">
-      <el-col :span="16">
+    <!-- <el-row :gutter="20" class="content"> -->
+      <!-- <el-col :span="16">
         <el-card>
           <div slot="header"><strong>基本信息</strong></div>
           <el-row :gutter="20">
@@ -40,7 +40,7 @@
           </el-row>
         </el-card>
         
-      </el-col>
+      </el-col> -->
 
       <!-- 学习信息 -->
       <!-- <el-col :span="8">
@@ -56,7 +56,7 @@
           <p>本科生</p>
         </el-card>
       </el-col> -->
-    </el-row>
+    <!-- </el-row> -->
 
     <!-- 账号设置和通知设置 -->
     <el-row :gutter="20" class="settings">
@@ -127,10 +127,10 @@ export default {
       emailNotification: false,
       dialogVisible: false,
       form: {
-        nickname: '兔子',
+        nickname: '用户38472383',
         name: '12345678'
       },
-      name: '兔子'
+      name: '用户38472383'
     };
   },
   methods: {
