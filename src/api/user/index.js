@@ -22,3 +22,10 @@ export const registerApi = (data) => {
     data,
   });
 };
+
+export const getUserData = () => {
+  return http({
+    url: "/user/me",
+    method: "get",
+  });
+};

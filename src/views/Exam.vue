@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { getExamList } from "@/api/exam/index.js";
 export default {
   data() {
     return {
@@ -206,7 +207,20 @@ export default {
       ],
     };
   },
+  created() {
+    this.getExamData();
+  },
   methods: {
+    getExamData() {
+      getExamList().then((res) => {
+        // if (res.code === 200) {
+        //   this.examCategories = res.data;
+        // } else {
+        //   console.error("Failed to fetch exam data");
+        // }
+      });
+    },
+
     updateFilteredExams() {
       // 触发计算属性的重新计算
     },

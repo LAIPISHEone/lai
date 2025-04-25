@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { registerApi, loginApi } from "../../api/user/index.js";
+import { registerApi, loginApi, getUserData } from "../../api/user/index.js";
 import { getUserInfo } from "../../api/index.js";
 export default {
   name: "Login",
@@ -89,8 +89,8 @@ export default {
         passWord: [
           { required: true, message: "请输入密码", trigger: "blur" },
           {
-            min: 6,
-            max: 12,
+            min: 1,
+            max: 20,
             message: "长度在 6 到 12 个字符",
             trigger: "blur",
           },
@@ -114,6 +114,15 @@ export default {
               .then((res) => {
                 this.loading = false;
                 if (res.data.code == 200) {
+                  getUserData().then((res) => {
+                    if (res.data.code == 200) {
+                      sessionStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(res.data.data)
+                      );
+                    }
+                  });
+
                   this.$message.success(res.data.message);
                   localStorage.setItem("token", res.data.data);
                   sessionStorage.setItem("userName", this.loginForm.userName);

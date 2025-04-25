@@ -35,11 +35,11 @@
                 <el-button
                   type="text"
                   icon="el-icon-delete"
-                  @click.stop="deleteCard(getOriginalIndex(card))"
+                  @click.stop="deleteCard(card)"
                 ></el-button>
               </div>
               <div class="subject-title">
-                {{ card.title }}
+                {{ card.course_name }}
                 <el-tag
                   v-if="searchText && isMatchingTitle(card)"
                   size="mini"
@@ -193,7 +193,7 @@ export default {
       inputTagVisible: false,
       inputTagValue: "",
       editingIndex: -1,
-      deleteIndex: -1,
+      deleteIndex: 0,
       cardForm: {
         title: "",
         description: "",
@@ -273,7 +273,11 @@ export default {
         page: 1,
         size: 1000,
       };
-      getCoursesList(params).then((res) => {});
+      getCoursesList(params).then((res) => {
+        if (res.data.code == 200) {
+          this.subjectCards = res.data.data.records;
+        }
+      });
     },
 
     // 获取卡片在原数组中的索引
@@ -318,19 +322,28 @@ export default {
     },
 
     // 删除卡片
-    deleteCard(index) {
-      this.deleteIndex = index;
+    deleteCard(card) {
+      deleteCourses(1).then((res) => {
+        if (res.code === 200) {
+          this.$message.success("删除成功");
+          this.deleteDialogVisible = false;
+        }
+      });
+      console.log("deleteCard", card);
+      this.deleteIndex = card.course_id;
       this.deleteDialogVisible = true;
     },
 
     // 确认删除
     confirmDelete() {
-      if (this.deleteIndex > -1) {
-        this.subjectCards.splice(this.deleteIndex, 1);
-        this.deleteIndex = -1;
-        this.deleteDialogVisible = false;
-        this.$message.success("删除成功");
-      }
+      console.log("confirmDelete", this.deleteIndex);
+
+      // if (this.deleteIndex > -1) {
+      //   this.subjectCards.splice(this.deleteIndex, 1);
+      //   this.deleteIndex = -1;
+      //   this.deleteDialogVisible = false;
+      //   this.$message.success("删除成功");
+      // }
     },
 
     // 保存卡片
