@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="login-form">
-      <div class="login-form-header"><h3>用户登录</h3></div>
+      <div class="login-form-header"><h3>辅助学习系统管理后台</h3></div>
       <div class="login-form-body">
         <el-form
           :rules="rules"
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getUserInfo } from "../../api/index.js";
+import { loginApi, getUserData } from "@/api/user/index.js";
 export default {
   name: "Login",
   data() {
@@ -73,11 +73,23 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          getUserInfo(this.loginForm).then((res) => {
+          let params = {
+            userName: this.loginForm.username,
+            password: this.loginForm.password,
+          };
+          loginApi(params).then((res) => {
             console.log(res);
-            if (res.data.code == 0) {
+            if (res.data.code == 200) {
+              getUserData().then((res) => {
+                if (res.code == 200) {
+                  localStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(res.data.data)
+                  );
+                }
+              });
               this.$message.success(res.data.message);
-              localStorage.setItem("token", res.data.data.token);
+              localStorage.setItem("token", res.data.data);
               this.$router.push("/home");
             } else {
               this.$message.error(res.data.message);

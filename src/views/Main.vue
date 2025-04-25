@@ -7,7 +7,7 @@
       <el-header class="header" style="height: auto"
         ><CommonHeader
       /></el-header>
-      <el-main><router-view></router-view></el-main>
+      <el-main style="height: 100px;"><router-view></router-view></el-main>
     </el-container>
   </el-container>
 </template>
