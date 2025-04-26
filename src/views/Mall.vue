@@ -11,12 +11,14 @@
         <el-input
           v-model="searchForm.name"
           placeholder="请输入考试名称"
+          clearable
         ></el-input>
       </el-form-item>
       <el-form-item label="考试类别">
-        <el-select v-model="searchForm.category" placeholder="请选择考试类别">
-          <el-option label="类别1" value="category1"></el-option>
-          <el-option label="类别2" value="category2"></el-option>
+        <el-select clearable v-model="searchForm.category" placeholder="请选择考试类别">
+          <el-option label="国家教育考试" value="国家教育考试"></el-option>
+          <el-option label="社会证书考试" value="社会证书考试"></el-option>
+          <el-option label="海外考试" value="海外考试"></el-option>
           <!-- 其他类别选项 -->
         </el-select>
       </el-form-item>
@@ -75,8 +77,9 @@
         </el-form-item>
         <el-form-item label="考试类别">
           <el-select v-model="examForm.category" placeholder="请选择考试类别">
-            <el-option label="类别1" value="category1"></el-option>
-            <el-option label="类别2" value="category2"></el-option>
+            <el-option label="国家教育考试" value="国家教育考试"></el-option>
+            <el-option label="社会证书考试" value="社会证书考试"></el-option>
+            <el-option label="海外考试" value="海外考试"></el-option>
             <!-- 其他类别选项 -->
           </el-select>
         </el-form-item>

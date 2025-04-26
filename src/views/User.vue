@@ -10,10 +10,11 @@
         <el-input
           v-model="searchForm.username"
           placeholder="请输入用户名"
+          clearable
         ></el-input>
       </el-form-item>
       <el-form-item label="用户ID">
-        <el-input v-model="searchForm.id" placeholder="请输入用户ID"></el-input>
+        <el-input clearable v-model="searchForm.id" placeholder="请输入用户ID"></el-input>
       </el-form-item>
       <el-form-item label="状态">
         <el-select v-model="searchForm.status" placeholder="请选择状态">
