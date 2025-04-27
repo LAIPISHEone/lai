@@ -3,7 +3,10 @@
     <!-- 用户信息头部 -->
     <el-row :gutter="20" class="header">
       <el-col :span="6">
-        <el-avatar :size="80" src="https://placehold.co/80x80?text=Avatar"></el-avatar>
+        <el-avatar
+          :size="80"
+          src="https://placehold.co/80x80?text=Avatar"
+        ></el-avatar>
       </el-col>
       <el-col :span="12">
         <h2>{{ name }}</h2>
@@ -17,7 +20,7 @@
 
     <!-- 基本信息 -->
     <!-- <el-row :gutter="20" class="content"> -->
-      <!-- <el-col :span="16">
+    <!-- <el-col :span="16">
         <el-card>
           <div slot="header"><strong>基本信息</strong></div>
           <el-row :gutter="20">
@@ -42,8 +45,8 @@
         
       </el-col> -->
 
-      <!-- 学习信息 -->
-      <!-- <el-col :span="8">
+    <!-- 学习信息 -->
+    <!-- <el-col :span="8">
         <el-card>
           <div slot="header"><strong>学习信息</strong></div>
           <p><strong>就读学校</strong></p>
@@ -99,9 +102,9 @@
     <!-- 编辑个人资料弹窗 -->
     <el-dialog title="编辑个人资料" :visible.sync="dialogVisible" width="30%">
       <el-form :model="form" label-width="80px">
-        <el-form-item label="昵称">
+        <!-- <el-form-item label="昵称">
           <el-input clearable v-model="form.nickname"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="姓名">
           <el-input v-model="form.name"></el-input>
         </el-form-item> -->
@@ -118,6 +121,7 @@
 </template>
 
 <script>
+import { updateUser } from "@/api/user/index.js";
 export default {
   data() {
     return {
@@ -127,10 +131,10 @@ export default {
       emailNotification: false,
       dialogVisible: false,
       form: {
-        nickname: '用户38472383',
-        name: '12345678'
+        // nickname: "用户38472383",
+        name: "12345678",
       },
-      name: '用户38472383'
+      name: "用户38472383",
     };
   },
   methods: {
@@ -139,12 +143,16 @@ export default {
     },
     handleEdit() {
       this.dialogVisible = false;
-      this.name = this.form.nickname;
-      this.$message.success('修改成功!')
-      // 这里可以添加保存到服务器的逻辑
-      console.log('保存修改后的昵称和姓名:', this.form);
-    }
-  }
+
+      updateUser({ user_id: 8, password: this.form.password }).then((res) => {
+        if (res.data.code == 200) {
+          this.$message.success("修改成功!");
+        } else {
+          this.$message.error("修改失败!");
+        }
+      });
+    },
+  },
 };
 </script>
 

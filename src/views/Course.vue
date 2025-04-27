@@ -43,15 +43,13 @@
           <!-- 富文本编辑器 -->
           <div style="margin-top: 20px; width: 60%" id="wangeditor"></div>
           <!-- 添加保存和编辑按钮 -->
-         
         </div>
         <div style="margin-top: 20px ;display: flex;justify-content: center;t">
-            <!-- <el-button type="primary" @click="editNotes">编辑</el-button> -->
-            <el-button type="success" @click="saveNotes">保存</el-button>
-          </div>
+          <!-- <el-button type="primary" @click="editNotes">编辑</el-button> -->
+          <el-button type="success" @click="saveNotes">保存</el-button>
+        </div>
       </el-tab-pane>
-      <el-tab-pane label="课程资料" name="materials">
-        <!-- 课程资料内容区域 -->
+      <!-- <el-tab-pane label="课程资料" name="materials">
         <div>
           <el-upload
             class="upload-demo"
@@ -78,18 +76,19 @@
             </ul>
           </div>
         </div>
-      </el-tab-pane>
+      </el-tab-pane> -->
     </el-tabs>
   </div>
 </template>
 
 <script>
 import E from "wangeditor";
+import { getCoursesNote } from "@/api/courses/index.js";
 
 export default {
   data() {
     return {
-      activeTab: 'notes', // 默认激活的标签页
+      activeTab: "notes", // 默认激活的标签页
       editor: null,
       htmlContent: "<p>hello</p>",
       firtherMethod: "loadingCompleted", // 回调父组件，通知editor已经创建完成
@@ -99,10 +98,8 @@ export default {
       isEditing: false, // 是否处于编辑状态
     };
   },
-  created() {
-    
-  },
-  
+  created() {},
+
   methods: {
     // 获取text文本
     getText() {
@@ -243,16 +240,20 @@ export default {
       console.log(file);
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${
+          files.length + fileList.length
+        } 个文件`
+      );
     },
     beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${ file.name }？`);
+      return this.$confirm(`确定移除 ${file.name}？`);
     },
     downloadFile(file) {
       // 下载文件逻辑
-      console.log('下载文件:', file);
+      console.log("下载文件:", file);
       // 这里可以添加实际的下载逻辑，例如使用a标签下载
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = file.url; // 文件的URL
       link.download = file.name; // 文件名
       document.body.appendChild(link);
@@ -261,10 +262,12 @@ export default {
     },
     previewFile(file) {
       // 预览文件逻辑
-      console.log('预览文件:', file);
+      console.log("预览文件:", file);
       // 这里可以添加实际的预览逻辑，例如使用iframe预览
       const previewWindow = window.open();
-      previewWindow.document.write(`<iframe src="${file.url}" width="100%" height="100%" style="border:none;"></iframe>`);
+      previewWindow.document.write(
+        `<iframe src="${file.url}" width="100%" height="100%" style="border:none;"></iframe>`
+      );
     },
     // 添加编辑笔记的方法
     editNotes() {
@@ -273,12 +276,12 @@ export default {
     // 添加保存笔记的方法
     saveNotes() {
       if (!this.isEditing) {
-        this.$message.warning('请先编辑笔记内容');
+        this.$message.warning("请先编辑笔记内容");
         return;
       }
       const htmlContent = this.getHtml();
       // 这里可以添加保存笔记到后端的逻辑
-      console.log('保存笔记内容:', htmlContent);
+      console.log("保存笔记内容:", htmlContent);
       // 示例：发送笔记内容到后端
       // this.$axios.post('/api/saveNotes', { content: htmlContent })
       //   .then(response => {
@@ -293,13 +296,41 @@ export default {
 
   mounted() {
     this.createEditor();
-    this.setHtml("<p>初始化从后端获取内容</p>");
-    let heml =
-      "<h1>高等数学</h1><h2>微积分基础</h2><p>微积分是高等数学的核心内容之一，主要包括微分和积分两部分。微分用于研究函数的变化率，而积分则用于计算面积、体积等。</p><h3>微分的基本概念</h3><p>微分是研究函数在某一点的变化率的工具。通过求导，我们可以得到函数的导数，进而分析函数的单调性、极值等性质。</p><h3>积分的应用</h3><p>积分在物理学、工程学等领域有广泛的应用。例如，通过积分可以计算物体的质量、重心等。</p><h2>线性代数</h2><p>线性代数是研究向量、矩阵、线性方程组等内容的数学分支。它在计算机科学、物理学等领域有重要应用。</p><h3>矩阵与行列式</h3><p>矩阵是线性代数中的重要工具，行列式则用于判断矩阵是否可逆。通过矩阵运算，可以求解线性方程组。</p><h3>向量空间</h3><p>向量空间是线性代数的核心概念之一，它描述了向量的线性组合和线性无关性。向量空间在机器学习、图像处理等领域有广泛应用。</p>";
-    this.setHtml(heml);
+    this.setHtml("<p>可以在该区域编辑你的笔记</p>");
+    // let heml =
+    //   "<h1>高等数学</h1><h2>微积分基础</h2><p>微积分是高等数学的核心内容之一，主要包括微分和积分两部分。微分用于研究函数的变化率，而积分则用于计算面积、体积等。</p><h3>微分的基本概念</h3><p>微分是研究函数在某一点的变化率的工具。通过求导，我们可以得到函数的导数，进而分析函数的单调性、极值等性质。</p><h3>积分的应用</h3><p>积分在物理学、工程学等领域有广泛的应用。例如，通过积分可以计算物体的质量、重心等。</p><h2>线性代数</h2><p>线性代数是研究向量、矩阵、线性方程组等内容的数学分支。它在计算机科学、物理学等领域有重要应用。</p><h3>矩阵与行列式</h3><p>矩阵是线性代数中的重要工具，行列式则用于判断矩阵是否可逆。通过矩阵运算，可以求解线性方程组。</p><h3>向量空间</h3><p>向量空间是线性代数的核心概念之一，它描述了向量的线性组合和线性无关性。向量空间在机器学习、图像处理等领域有广泛应用。</p>";
+
+    // let heml = `<h1 id="section-1">高等数学</h1><h2 id="section-2">微积分基础</h2><p>微积分是高等数学的核心内容之一，主要包括微分和积分两部分。微分用于研究函数的变化率，而积分则用于计算面积、体积等。</p><ol><li><p><strong>导数定义</strong>：函数<math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></semantics></math>f(x)在点<math><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></semantics></math>x0处的导数为极限&nbsp;<math><semantics><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><msub><mrow><mi>lim</mi><mo>⁡</mo></mrow><mrow><mi>Δ</mi><mi>x</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>Δ</mi><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mrow><mi>Δ</mi><mi>x</mi></mrow></mfrac></mrow></semantics></math>f′(x0)=limΔx→0Δxf(x0+Δx)−f(x0)。</p></li><li><p><strong>几何意义</strong>：导数表示函数图像在该点的切线斜率。</p></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>单调性</strong>：若<math><semantics><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn></mrow></semantics></math>f′(x)&gt;0（或<math><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow></semantics></math>&lt;0），则函数单调递增（或递减）。</p></li><li><p><strong>极值</strong>：通过导数为零的点（驻点）及二阶导数判断极大值、极小值。</p></li><li><p><strong>泰勒展开</strong>：用多项式逼近函数，分析局部性质。</p></li></ul></li></ol><h3 id="section-3">微分的基本概念</h3><p>微分是研究函数在某一点的变化率的工具。通过求导，我们可以得到函数的导数，进而分析函数的单调性、极值等性质。</p><h3 id="section-4">积分的应用</h3><p>积分在物理学、工程学等领域有广泛的应用。例如，通过积分可以计算物体的质量、重心等。</p><h2 id="section-5">线性代数</h2><p>线性代数是研究向量、矩阵、线性方程组等内容的数学分支。它在计算机科学、物理学等领域有重要应用。</p><h3 id="section-6">矩阵与行列式</h3><p>矩阵是线性代数中的重要工具，行列式则用于判断矩阵是否可逆。通过矩阵运算，可以求解线性方程组。</p><h3 id="section-7">向量空间</h3><p>向量空间是线性代数的核心概念之一，它描述了向量的线性组合和线性无关性。向量空间在机器学习、图像处理等领域有广泛应用。</p>`;
+
+    //     let heml = `<h1 id="section-1">高等数学</h1><h2 id="section-2">微积分基础</h2><p>微积分是高等数学的核心内容之一，由微分学和积分学两部分组成。微分学研究函数的瞬时变化率（导数）和局部性质，而积分学研究函数的累积效应（积分）和全局性质。两者通过微积分基本定理紧密联系，构成现代数学和科学的基础工具。</p><h3 id="section-3">微分的基本概念</h3><p>微分是研究函数在某一点的变化率的工具。通过求导，我们可以得到函数的导数，进而分析函数的单调性、极值等性质。</p><ol><li><p><strong>导数定义</strong>：函数<math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></semantics></math>f(x)在点<math><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></semantics></math>x0处的导数为极限&nbsp;<math><semantics><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><msub><mrow><mi>lim</mi><mo>⁡</mo></mrow><mrow><mi>Δ</mi><mi>x</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>Δ</mi><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mrow><mi>Δ</mi><mi>x</mi></mrow></mfrac></mrow></semantics></math>f′(x0)=limΔx→0Δxf(x0+Δx)−f(x0)。</p></li><li><p><strong>几何意义</strong>：导数表示函数图像在该点的切线斜率。</p></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>单调性</strong>：若<math><semantics><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn></mrow></semantics></math>f′(x)&gt;0（或<math><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow></semantics></math>&lt;0），则函数单调递增（或递减）。</p></li><li><p><strong>极值</strong>：通过导数为零的点（驻点）及二阶导数判断极大值、极小值。</p></li><li><p><strong>泰勒展开</strong>：用多项式逼近函数，分析局部性质。</p></li></ul></li></ol><h3 id="section-4">积分的应用</h3><p>积分分为不定积分（原函数）和定积分（面积、累积量），主要应用包括：</p><ol><li><p><strong>几何应用</strong>：计算曲线围成的面积、旋转体体积、弧长等。</p></li><li><p><strong>物理应用</strong>：</p><ul><li><p><strong>质量分布</strong>：通过密度函数积分求质量。</p></li><li><p><strong>重心计算</strong>：利用积分求不均匀物体的质心。</p></li><li><p><strong>功与能量</strong>：变力做功问题通过路径积分求解。</p></li></ul></li><li><p><strong>工程应用</strong>：信号处理中的傅里叶变换、概率论中的概率密度积分等。</p></li></ol><h2 id="section-5">线性代数</h2><p>线性代数是研究向量、矩阵、线性方程组等内容的数学分支。它在计算机科学、物理学等领域有重要应用。</p><h3 id="section-6">矩阵与行列式</h3><ol><li><p><strong>矩阵</strong>：</p><ul><li><p><strong>定义</strong>：由<math><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></semantics></math>m×n个数排列成的矩形阵列，表示线性变换或数据。</p></li><li><p><strong>运算</strong>：加法、数乘、乘法（需满足维度匹配）、转置。</p></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>线性方程组</strong>：<math><semantics><mrow><mi>A</mi><mi>x</mi><mo>=</mo><mi>b</mi></mrow></semantics></math>Ax=b的求解（如高斯消元法）。</p></li><li><p><strong>计算机图形学</strong>：矩阵表示旋转、缩放等变换。</p></li></ul></li></ul></li><li><p><strong>行列式</strong>：</p><ul><li><p><strong>定义</strong>：方阵<math><semantics><mrow><mi>A</mi></mrow></semantics></math>A的行列式<math><semantics><mrow><mi>det</mi><mo>⁡</mo><mo>(</mo><mi>A</mi><mo>)</mo></mrow></semantics></math>det(A)是一个标量，反映线性变换的缩放因子。</p></li><li><p><strong>性质</strong>：</p><ul><li><p><math><semantics><mrow><mi>det</mi><mo>⁡</mo><mo>(</mo><mi>A</mi><mo>)</mo><mo>≠</mo><mn>0</mn></mrow></semantics></math>det(A)=0等价于矩阵可逆。</p></li><li><p>行列式为0时，矩阵为奇异矩阵（线性相关）。</p></li></ul></li><li><p><strong>计算</strong>：拉普拉斯展开、上三角化简化。</p></li></ul></li></ol><h3 id="section-7">向量空间</h3><ol><li><p><strong>核心概念</strong>：</p><ul><li><p><strong>向量空间</strong>：满足加法和数乘封闭性的集合（如<math><semantics><mrow><msup><mi>R</mi><mi>n</mi></msup></mrow></semantics></math>Rn）。</p></li><li><p><strong>基与维数</strong>：极大线性无关组称为基，基的个数为维数。</p></li><li><p><strong>线性变换</strong>：向量空间之间的映射<math><semantics><mrow><mi>T</mi></mrow></semantics></math>T满足<math><semantics><mrow><mi>T</mi><mo>(</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>y</mi><mo>)</mo><mo>=</mo><mi>a</mi><mi>T</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>b</mi><mi>T</mi><mo>(</mo><mi>y</mi><mo>)</mo></mrow></semantics></math>T(ax+by)=aT(x)+bT(y)。</p></li></ul></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>机器学习</strong>：</p><ul><li><p>特征向量用于主成分分析（PCA）。</p></li><li><p>数据表示为向量，便于降维和分类。</p></li></ul></li><li><p><strong>图像处理</strong>：</p><ul><li><p>像素矩阵的奇异值分解（SVD）用于压缩。</p></li><li><p>卷积运算（滤波）通过矩阵乘法实现。</p></li></ul></li></ul></li></ol><p><br/></p>
+    //
+
+    // `;
+    getCoursesNote({ courseId: this.$route.query.id, userId: 4 }).then(
+      (res) => {
+        if (res.data.code == 200) {
+          this.setHtml(res.data.data.course_html);
+        }
+      }
+    );
+
+    // let heml =
+    //   '<h1 id="section-1">高等数学</h1><h2 id="section-2">微积分基础</h2><p>微积分是高等数学的核心内容之一，由微分学和积分学两部分组成。微分学研究函数的瞬时变化率（导数）和局部性质，而积分学研究函数的累积效应（积分）和全局性质。两者通过微积分基本定理紧密联系，构成现代数学和科学的基础工具。</p><h3 id="section-3">微分的基本概念</h3><p>微分是研究函数在某一点的变化率的工具。通过求导，我们可以得到函数的导数，进而分析函数的单调性、极值等性质。</p><ol><li><p><strong>导数定义</strong>：函数<math><semantics><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></semantics></math>f(x)在点<math><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub></mrow></semantics></math>x0处的导数为极限&nbsp;<math><semantics><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo><mo>=</mo><msub><mrow><mi>lim</mi><mo>⁡</mo></mrow><mrow><mi>Δ</mi><mi>x</mi><mo>→</mo><mn>0</mn></mrow></msub><mfrac><mrow><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>+</mo><mi>Δ</mi><mi>x</mi><mo>)</mo><mo>−</mo><mi>f</mi><mo>(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>)</mo></mrow><mrow><mi>Δ</mi><mi>x</mi></mrow></mfrac></mrow></semantics></math>f′(x0)=limΔx→0Δxf(x0+Δx)−f(x0)。</p></li><li><p><strong>几何意义</strong>：导数表示函数图像在该点的切线斜率。</p></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>单调性</strong>：若<math><semantics><mrow><msup><mi>f</mi><mo>′</mo></msup><mo>(</mo><mi>x</mi><mo>)</mo><mo>&gt;</mo><mn>0</mn></mrow></semantics></math>f′(x)&gt;0（或<math><semantics><mrow><mo>&lt;</mo><mn>0</mn></mrow></semantics></math>&lt;0），则函数单调递增（或递减）。</p></li><li><p><strong>极值</strong>：通过导数为零的点（驻点）及二阶导数判断极大值、极小值。</p></li><li><p><strong>泰勒展开</strong>：用多项式逼近函数，分析局部性质。</p></li></ul></li></ol><h3 id="section-4">积分的应用</h3><p>积分分为不定积分（原函数）和定积分（面积、累积量），主要应用包括：</p><ol><li><p><strong>几何应用</strong>：计算曲线围成的面积、旋转体体积、弧长等。</p></li><li><p><strong>物理应用</strong>：</p><ul><li><p><strong>质量分布</strong>：通过密度函数积分求质量。</p></li><li><p><strong>重心计算</strong>：利用积分求不均匀物体的质心。</p></li><li><p><strong>功与能量</strong>：变力做功问题通过路径积分求解。</p></li></ul></li><li><p><strong>工程应用</strong>：信号处理中的傅里叶变换、概率论中的概率密度积分等。</p></li></ol><h2 id="section-5">线性代数</h2><p>线性代数是研究向量、矩阵、线性方程组等内容的数学分支。它在计算机科学、物理学等领域有重要应用。</p><h3 id="section-6">矩阵与行列式</h3><ol><li><p><strong>矩阵</strong>：</p><ul><li><p><strong>定义</strong>：由<math><semantics><mrow><mi>m</mi><mo>×</mo><mi>n</mi></mrow></semantics></math>m×n个数排列成的矩形阵列，表示线性变换或数据。</p></li><li><p><strong>运算</strong>：加法、数乘、乘法（需满足维度匹配）、转置。</p></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>线性方程组</strong>：<math><semantics><mrow><mi>A</mi><mi>x</mi><mo>=</mo><mi>b</mi></mrow></semantics></math>Ax=b的求解（如高斯消元法）。</p></li><li><p><strong>计算机图形学</strong>：矩阵表示旋转、缩放等变换。</p></li></ul></li></ul></li><li><p><strong>行列式</strong>：</p><ul><li><p><strong>定义</strong>：方阵<math><semantics><mrow><mi>A</mi></mrow></semantics></math>A的行列式<math><semantics><mrow><mi>det</mi><mo>⁡</mo><mo>(</mo><mi>A</mi><mo>)</mo></mrow></semantics></math>det(A)是一个标量，反映线性变换的缩放因子。</p></li><li><p><strong>性质</strong>：</p><ul><li><p><math><semantics><mrow><mi>det</mi><mo>⁡</mo><mo>(</mo><mi>A</mi><mo>)</mo><mo>≠</mo><mn>0</mn></mrow></semantics></math>det(A)=0等价于矩阵可逆。</p></li><li><p>行列式为0时，矩阵为奇异矩阵（线性相关）。</p></li></ul></li><li><p><strong>计算</strong>：拉普拉斯展开、上三角化简化。</p></li></ul></li></ol><h3 id="section-7">向量空间</h3><ol><li><p><strong>核心概念</strong>：</p><ul><li><p><strong>向量空间</strong>：满足加法和数乘封闭性的集合（如<math><semantics><mrow><msup><mi>R</mi><mi>n</mi></msup></mrow></semantics></math>Rn）。</p></li><li><p><strong>基与维数</strong>：极大线性无关组称为基，基的个数为维数。</p></li><li><p><strong>线性变换</strong>：向量空间之间的映射<math><semantics><mrow><mi>T</mi></mrow></semantics></math>T满足<math><semantics><mrow><mi>T</mi><mo>(</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>y</mi><mo>)</mo><mo>=</mo><mi>a</mi><mi>T</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>+</mo><mi>b</mi><mi>T</mi><mo>(</mo><mi>y</mi><mo>)</mo></mrow></semantics></math>T(ax+by)=aT(x)+bT(y)。</p></li></ul></li><li><p><strong>应用</strong>：</p><ul><li><p><strong>机器学习</strong>：</p><ul><li><p>特征向量用于主成分分析（PCA）。</p></li><li><p>数据表示为向量，便于降维和分类。</p></li></ul></li><li><p><strong>图像处理</strong>：</p><ul><li><p>像素矩阵的奇异值分解（SVD）用于压缩。</p></li><li><p>卷积运算（滤波）通过矩阵乘法实现。</p></li></ul></li></ul></li></ol><p><br/></p>\n﻿\n\n';
+
+    // this.setHtml(heml);
+
+    // const data = {
+    //   courseId: 2,
+    //   userId: 4,
+    //   courseHtml: heml,
+    // };
+
+    // const jsonString = JSON.stringify(data);
+    // console.log(jsonString);
 
     // 使用正则表达式匹配 h1 到 h5 标签及其内容
-    const regex = /<h([1-5])>(.*?)<\/h\1>/g;
+    // const regex = /<h([1-5])>(.*?)<\/h\1>/g;
+    const regex = /<h([1-5]) id="[^"]*">(.*?)<\/h\1>/g;
     let match;
     let tempList = [];
     let idCounter = 1; // 用于生成唯一的id

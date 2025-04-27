@@ -25,19 +25,19 @@
         <el-collapse-item
           v-for="(exam, index) in filteredExamsByCategory(category.exams)"
           :key="index"
-          :title="exam.name"
+          :title="exam.exam_name"
           style="margin: 20px; width: 350px"
         >
           <div class="exam-info">
-            <p><strong>考试时间:</strong> {{ exam.date }}</p>
+            <p><strong>考试时间:</strong> {{ exam.exam_date }}</p>
             <p>
               <strong>报名网站:</strong>
-              <a :href="exam.registrationUrl" target="_blank">{{
-                exam.registrationUrl
+              <a :href="exam.registration_url" target="_blank">{{
+                exam.registration_url
               }}</a>
             </p>
             <p>
-              <strong>报名截止时间:</strong> {{ exam.registrationDeadline }}
+              <strong>报名截止时间:</strong> {{ exam.registration_deadline }}
             </p>
           </div>
         </el-collapse-item>
@@ -52,159 +52,7 @@ export default {
   data() {
     return {
       searchKeyword: "",
-      examCategories: [
-        {
-          title: "国家教育考试",
-          exams: [
-            {
-              name: "普通高考",
-              date: "2025-6-7",
-              registrationUrl: "https://gaokao.neea.edu.cn/",
-              registrationDeadline: "各省份不同，请查看官网",
-              backgroundImage: "../assets/english-bg.png",
-            },
-            {
-              name: "成人高考",
-              date: "2025-6-7",
-              registrationUrl: "https://chengkao.neea.edu.cn/",
-              registrationDeadline: "各省份不同，请查看官网",
-              backgroundImage: "../assets/english-bg.png",
-            },
-            {
-              name: "研究生考试",
-              date: "2025-6-7",
-              registrationUrl: "https://yankao.neea.edu.cn/",
-              registrationDeadline: "各省份不同，请查看官网",
-              backgroundImage: "../assets/english-bg.png",
-            },
-            {
-              name: "自学考试",
-              date: "2025-6-14",
-              registrationUrl: "https://zikao.neea.edu.cn/",
-              registrationDeadline: "各考点不同，请查看官网",
-              backgroundImage: "../assets/english-bg.png",
-            },
-            {
-              name: "中小学教师资格考试",
-              date: "2025-3-29",
-              registrationUrl: "https://ntce.neea.edu.cn/",
-              registrationDeadline: "登录各省级承办机构网站查询",
-              backgroundImage:
-                "https://img.peapix.com/8a0558c856a74b5885aefa42d74e3935_1080.jpg",
-            },
-            {
-              name: "同等学力申请硕士学位考试",
-              date: "2025-3-29",
-              registrationUrl: "https://tdxl.neea.edu.cn/",
-              registrationDeadline: "登录各省级承办机构网站查询",
-              backgroundImage:
-                "https://img.peapix.com/8a0558c856a74b5885aefa42d74e3935_1080.jpg",
-            },
-          ],
-        },
-        {
-          title: "社会证书考试",
-          exams: [
-            {
-              name: "全国计算机等级考试(NCRE)",
-              date: "2025-3-29",
-              registrationUrl: "https://ncre.neea.edu.cn/",
-              registrationDeadline: "登录各省级承办机构网站查询",
-              backgroundImage:
-                "https://img.peapix.com/8a0558c856a74b5885aefa42d74e3935_1080.jpg",
-            },
-            {
-              name: "全国大学英语四、六级考试(CET) ",
-              date: "2023-11-01",
-              registrationUrl: "https://cet.neea.edu.cn/",
-              registrationDeadline: "2023-10-15",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "全国计算机应用水平考试(NIT)",
-              date: "2023-11-01",
-              registrationUrl: "https://nit.neea.edu.cn/",
-              registrationDeadline: "2023-10-15",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "全国英语等级考试(PETS)",
-              date: "2023-11-01",
-              registrationUrl: "https://pets.neea.edu.cn/",
-              registrationDeadline: "2023-10-15",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "全国外语水平考试(WSK)",
-              date: "2023-11-01",
-              registrationUrl: "http://example.com/register2",
-              registrationDeadline: "2023-10-15",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "书画等级考试(CCPT)",
-              date: "2023-11-01",
-              registrationUrl: "http://example.com/register2",
-              registrationDeadline: "2023-10-15",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "中国少数民族汉语水平等级考试(MHK)",
-              date: "2023-11-01",
-              registrationUrl: "http://example.com/register2",
-              registrationDeadline: "2023-10-15",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-          ],
-        },
-        {
-          title: "海外考试",
-          exams: [
-            {
-              name: "托福网考®(TOEFL iBT®)",
-              date: "多场考试，请查看官网",
-              registrationUrl: "https://toefl-main.neea.cn/",
-              registrationDeadline: "多场考试，请查看官网",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "雅思(IELTS)",
-              date: "2025年4-6月，多场考试，请查看官网",
-              registrationUrl: "https://ielts-main.neea.cn/",
-              registrationDeadline: "2025年3-6月，多场考试，请查看官网",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "德福(TestDaF)",
-              date: "2025年4-6月，多场考试，请查看官网",
-              registrationUrl: "https://ielts-main.neea.cn/",
-              registrationDeadline: "2025年3-6月，多场考试，请查看官网",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "日本语能力测试(JLPT)",
-              date: "2025年4-6月，多场考试，请查看官网",
-              registrationUrl: "https://ielts-main.neea.cn/",
-              registrationDeadline: "2025年3-6月，多场考试，请查看官网",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "韩国语能力考试 (TOPIK)",
-              date: "2025年4-6月，多场考试，请查看官网",
-              registrationUrl: "https://ielts-main.neea.cn/",
-              registrationDeadline: "2025年3-6月，多场考试，请查看官网",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-            {
-              name: "美国研究生入学考试(GRE)",
-              date: "2025年4-6月，多场考试，请查看官网",
-              registrationUrl: "https://ielts-main.neea.cn/",
-              registrationDeadline: "2025年3-6月，多场考试，请查看官网",
-              backgroundImage: "http://example.com/background3.jpg",
-            },
-          ],
-        },
-      ],
+      examCategories: [],
     };
   },
   created() {
@@ -213,11 +61,36 @@ export default {
   methods: {
     getExamData() {
       getExamList().then((res) => {
-        // if (res.code === 200) {
-        //   this.examCategories = res.data;
-        // } else {
-        //   console.error("Failed to fetch exam data");
-        // }
+        console.log("**", res);
+        if (res.data.code === 200) {
+          console.log("examCategories");
+          let array = [
+            {
+              title: "国家教育考试",
+              exams: [],
+            },
+            { title: "社会证书考试", exams: [] },
+            { title: "海外考试", exams: [] },
+          ];
+
+          res.data.data.records.forEach((category) => {
+            if (category.exam_type === "国家教育考试") {
+              category.exam_date = category.exam_date.slice(0, 10);
+              category.registration_deadline =
+                category.registration_deadline.slice(0, 10);
+
+              array[0].exams.push(category);
+            } else if (category.exam_type === "社会证书考试") {
+              array[1].exams.push(category);
+            } else if (category.exam_type === "海外考试") {
+              array[2].exams.push(category);
+            }
+          });
+          console.log("examCategories", array);
+          this.examCategories = array;
+        } else {
+          console.error("Failed to fetch exam data");
+        }
       });
     },
 
@@ -226,7 +99,7 @@ export default {
     },
     filteredExamsByCategory(exams) {
       return exams.filter((exam) =>
-        exam.name.toLowerCase().includes(this.searchKeyword.toLowerCase())
+        exam.exam_name.toLowerCase().includes(this.searchKeyword.toLowerCase())
       );
     },
   },

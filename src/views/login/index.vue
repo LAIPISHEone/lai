@@ -72,7 +72,12 @@
 </template>
 
 <script>
-import { registerApi, loginApi, getUserData } from "../../api/user/index.js";
+import {
+  registerApi,
+  loginApi,
+  getUserData,
+  getNotices,
+} from "../../api/user/index.js";
 import { getUserInfo } from "../../api/index.js";
 export default {
   name: "Login",
@@ -124,14 +129,34 @@ export default {
                   });
 
                   this.$message.success(res.data.message);
-                  localStorage.setItem("token", res.data.data);
+                  localStorage.setItem("token", `Bearer ${res.data.data}`);
                   sessionStorage.setItem("userName", this.loginForm.userName);
                   this.$router.push("/home");
-                  this.$notify.info({
-                    title: "公告",
-                    message: "AI助手已上线，快去试试吧！",
-                    duration: 0,
-                  });
+                  let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+
+                  if (userInfo.is_bulletin) {
+                    getNotices().then((res) => {
+                      if (res.data.code == 200) {
+                        this.$notify({
+                          title: "系统公告",
+                          message: res.data.data[0].notice,
+                          type: "warning",
+                          duration: 0,
+                        });
+                      } else {
+                        this.$notify({
+                          title: "系统公告",
+                          message: "获取系统公告失败，请稍后再试",
+                          type: "warning",
+                          duration: 0,
+                        });
+                      }
+                    });
+                  }
+
+                  if (userInfo.is_remind) {
+                  }
+
                   setTimeout(() => {
                     this.$notify({
                       title: "复习提醒",

@@ -29,3 +29,19 @@ export const getUserData = () => {
     method: "get",
   });
 };
+
+export const updateUser = (data) => {
+  return http({
+    url: "/user/update",
+    method: "post",
+    data,
+  });
+};
+
+//获取公告信息
+export const getNotices = () => {
+  return http({
+    url: "/notices/list",
+    method: "get",
+  });
+};

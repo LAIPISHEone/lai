@@ -35,3 +35,12 @@ export const deleteCourses = (data) => {
     data: data,
   });
 };
+
+//查询课程对应课程笔记
+export const getCoursesNote = (data) => {
+  return http({
+    url: "/courses_notes/query_note",
+    method: "get",
+    params: data,
+  });
+};

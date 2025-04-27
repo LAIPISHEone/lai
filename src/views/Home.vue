@@ -25,7 +25,13 @@
             :key="index"
             @click.native="navigateToCourse(card)"
           >
-            <el-card class="subject-card" :class="card.type" shadow="hover">
+            <el-card
+              class="subject-card"
+              :class="
+               
+              "
+              shadow="hover"
+            >
               <div class="card-actions">
                 <el-button
                   type="text"
@@ -59,7 +65,18 @@
                   {{ tag }}
                 </el-tag>
               </div>
-              <div class="card-bg" :class="card.type + '-bg'"></div>
+              <div
+                class="card-bg"
+                :class="
+                  (card.type == '英语'
+                    ? 'english'
+                    : card.type == '数学'
+                    ? 'math'
+                    : card.type == '计算机'
+                    ? 'computer'
+                    : '') + '-bg'
+                "
+              ></div>
             </el-card>
           </el-col>
         </template>
@@ -225,27 +242,27 @@ export default {
         ],
       },
       subjectCards: [
-        {
-          title: "高等数学",
-          description: "包含微积分、线性代数、概率论与数理统计等核心内容",
-          type: "math",
-          tagType: "",
-          tags: ["微积分", "线性代数", "概率论"],
-        },
-        {
-          title: "计算机科学",
-          description: "涵盖数据结构、算法、计算机网络等基础知识",
-          type: "computer",
-          tagType: "info",
-          tags: ["数据结构", "算法", "计算机网络"],
-        },
-        {
-          title: "英语学习",
-          description: "包含听说读写全方位的英语学习资料和练习",
-          type: "english",
-          tagType: "success",
-          tags: ["口语", "写作", "词汇"],
-        },
+        // {
+        //   title: "高等数学",
+        //   description: "包含微积分、线性代数、概率论与数理统计等核心内容",
+        //   type: "math",
+        //   tagType: "",
+        //   tags: ["微积分", "线性代数", "概率论"],
+        // },
+        // {
+        //   title: "计算机科学",
+        //   description: "涵盖数据结构、算法、计算机网络等基础知识",
+        //   type: "computer",
+        //   tagType: "info",
+        //   tags: ["数据结构", "算法", "计算机网络"],
+        // },
+        // {
+        //   title: "英语学习",
+        //   description: "包含听说读写全方位的英语学习资料和练习",
+        //   type: "english",
+        //   tagType: "success",
+        //   tags: ["口语", "写作", "词汇"],
+        // },
       ],
     };
   },
@@ -426,7 +443,7 @@ export default {
 
     // 导航到课程详情页
     navigateToCourse(card) {
-      this.$router.push({ path: "course", params: { id: card.id } });
+      this.$router.push({ path: "course", query: { id: card.course_id } });
     },
   },
 };
