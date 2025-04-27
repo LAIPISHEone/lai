@@ -89,7 +89,7 @@ export default {
                 }
               });
               this.$message.success(res.data.message);
-              localStorage.setItem("token", res.data.data);
+              localStorage.setItem("token", `Bearer ${res.data.data}`);
               this.$router.push("/home");
             } else {
               this.$message.error(res.data.message);

@@ -13,7 +13,7 @@ module.exports = {
       "/campus": {
         // target: 'https://starlight.xkxyyy.com/',
         // target: 'http://student.thsrm.com/',
-        target: "http://192.168.58.148:8081",
+        target: "http://192.168.8.57:8080/backend",
         changeOrigin: true,
         timeout: 6 * 60 * 1000,
         pathRewrite: {
